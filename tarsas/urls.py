@@ -24,6 +24,8 @@ urlpatterns = [
     path("new_game/", views.new_game, name="new_game"),
     path("roll_dice/<int:game_id>/", views.roll_dice, name="roll_dice"),
     path('game/<int:game_id>/', views.game_view, name='game_view'),
+    path('rules/', views.game_rules, name="rules"),
+
 ]
 
 

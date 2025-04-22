@@ -6,6 +6,10 @@ from .models import Game, Card, Player, Tile
 def home(request):
     return render(request, 'home.html')
 
+def game_rules(request):
+    return render(request, 'gamerules.html')
+
+
 def new_game(request):
     if request.method == "POST":
         player_count = int(request.POST.get("player_count"))
