@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Játék </title>
+</head>
+<body>
+
+<h1>Vakok Társasjátéka</h1>
+
+<h2>Új játék indítása</h2>
+
+<form method="post" action="{% url 'new_game' %}">
+    {% csrf_token %}
+    <label>Játékosok száma:</label>
+    <select name="player_count" id="player_count" onchange="updatePlayerInputs()">
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <br>
+    <div id="player_names">
+        <label>Játékos 1 neve: <input type="text" name="player_1" required></label><br>
+        <label>Játékos 2 neve: <input type="text" name="player_2" required></label><br>
+    </div>
+    <button type="submit">Játék indítása</button>
+</form>
+
+<script>
+function updatePlayerInputs() {
+    let count = document.getElementById("player_count").value;
+    let playerNamesDiv = document.getElementById("player_names");
+    playerNamesDiv.innerHTML = "";
+    for (let i = 1; i <= count; i++) {
+        playerNamesDiv.innerHTML += `<label>Játékos ${i} neve: <input type="text" name="player_${i}" required></label><br>`;
+    }
+}
+</script>
+
+</body>
+</html>

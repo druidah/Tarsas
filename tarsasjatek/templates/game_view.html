@@ -1,0 +1,52 @@
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Játék - {{ game.id }}</title>
+</head>
+<body>
+    <h1>Játék: {{ game.id }} - Kör: {{ game.current_turn }}</h1>
+
+    <h2>Játékosok</h2>
+    {% for player in players %}
+        {% with player_tile=tiles|get_item:player.position %}
+            <h3>{{ player.name }}</h3>
+            <p><strong>Pozíció:</strong> {{ player.position }} - {{ player_tile.description }}</p>
+            <ul>
+                {% if player.has_white_cane %}<li>Fehérbotja van.</li>{% endif %}
+                {% if player.has_guide_dog %}<li>Van vakvezető kutyája.</li>{% endif %}
+                {% if player.knows_music %}<li>Tud zenélni.</li>{% endif %}
+                {% if player.has_instrument %}<li>Vannak hangszerei.</li>{% endif %}
+                {% if player.waiting_for_dog %}<li>Jelenleg vakvezető kutyára vár.</li>{% endif %}
+
+                {% if player.job %}<li>Munkahely: {{ player.job }}</li>{% endif %}
+                {% if player.in_primary_school %}<li>Jelenleg általános iskolás.</li>{% endif %}
+                {% if player.in_high_school %}<li>Jelenleg középiskolás.</li>{% endif %}
+                {% if player.in_university %}<li>Jelenleg egyetemista.</li>{% endif %}
+                {% if player.waiting_for_job %}<li>Felvételre vár: {{ player.waiting_for_job }}</li>{% endif %}
+                {% if player.school_points > 0 %}<li>Iskolapontok: {{ player.school_points }}</li>{% endif %}
+                {% if player.has_primary_school %}<li>Elvégezte az általános iskolát.</li>{% endif %}
+                {% if player.has_high_school %}<li>Elvégezte a középiskolát.</li>{% endif %}
+                {% if player.has_university %}<li>Elvégezte az egyetemet.</li>{% endif %}
+            </ul>
+        {% endwith %}
+    {% endfor %}
+
+    <h2>Aktuális játékos</h2>
+    <p><strong>{{ current_player.name }}</strong> következik!</p>
+                {% if current_player.skip_turn == True %} <strong> Kimarad a mostani dobásból! </strong> {% endif %}
+
+    <h2>Kockadobás</h2>
+    <form action="{% url 'roll_dice' game.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Dobás</button>
+    </form>
+
+    <h2>Játék eseményei</h2>
+    <pre>{{ game.log }}</pre>
+
+    <a href="{% url 'home' %}">Vissza a főoldalra</a>
+</body>
+</html>
