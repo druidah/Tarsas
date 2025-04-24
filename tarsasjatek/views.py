@@ -207,7 +207,7 @@ def learn_music(player):
 def increase_school_points(player):
     if player.in_primary_school or player.in_high_school or player.in_university:
         player.school_points = player.school_points+1
-        player.save()
+    player.save()
 
 def request_guide_dog(player):
     """Vakvezető kutya igénylése."""
@@ -273,7 +273,7 @@ def continue_education(player, game):
         player.position = 2
         handle_tile_effect(player, game)  
         player.save()
-    elif player.in_high_school or player.has_primary_school:
+    elif (player.in_high_school) or (player.has_primary_school and not player.has_high_school):
         player.position = 6
         handle_tile_effect(player, game)  
         player.save()
@@ -312,7 +312,7 @@ def decrease_school_points_bad_people(player):
     player.save()
 
 def get_wanted_job(player):
-    if player_waiting_for_job == "szőnyegszövő":
+    if player.waiting_for_job == "szőnyegszövő":
         player.job = "szőnyegszövő"
         player.waiting_for_job = ""
         player.save()
